@@ -1,6 +1,10 @@
 import { useState } from "react";
 
 const Task = (props) => {
+  const [finished, setFinished] = useState(false);
+  const handleInputChange = () => {
+    setFinished(!finished);
+  };
   return (
     <div className="flex justify-between border-y py-3">
       <div>
