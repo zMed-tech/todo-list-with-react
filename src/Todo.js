@@ -85,7 +85,7 @@ const Todo = () => {
 
       <div className="my-4  border py-1 px-2">
         <input
-          className="outline-0"
+          className="outline-0 w-full"
           placeholder="Title"
           value={title}
           onChange={handleChange}
