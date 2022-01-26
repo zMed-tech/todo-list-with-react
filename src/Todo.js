@@ -7,7 +7,12 @@ const Todo = () => {
     setTask(e.target.value);
   };
   const [task, setTask] = useState("");
- 
+  const addTask = () => {
+    if (task !== "") {
+      setTasks([...tasks, { name: task }]);
+      setTask("");
+    }
+  };
 
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
