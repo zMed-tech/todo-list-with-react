@@ -69,15 +69,19 @@ const Todo = () => {
 
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
-      {loadGetTasks && (
+      {loadGetTasks ? (
         <div>
-          <span>Loading ...</span>{" "}
+          <span>Loading ...</span>
         </div>
+      ) : (
+        ""
       )}
-      {loading && (
+      {loading ? (
         <div>
-          <span>Loading ...</span>{" "}
+          <span>Loading ...</span>
         </div>
+      ) : (
+        ""
       )}
       <div className="my-4 mx-auto">
         <span className="text-xl font-bold text-indigo-900">My Todo</span>
@@ -117,7 +121,7 @@ const Todo = () => {
       <div>
         <ul>
           {dataTasks?.tasks.map((task) => {
-            return <Task key={task.id} task={task} />;
+            return <Task key={task.id} task={task} refetch={refetch} />;
           })}
         </ul>
       </div>
