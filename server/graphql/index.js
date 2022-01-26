@@ -7,9 +7,9 @@ exports.typeDefs = gql`
     title: String
     description: String
     finished: Boolean
-    created_at: Int
-    finished_at: Int
-    update_at: Int
+    created_at: String
+    finished_at: String
+    update_at: String
   }
 
   type Query {
@@ -21,9 +21,7 @@ exports.typeDefs = gql`
       title: String
       description: String
       finished: Boolean
-      created_at: Int
-      finished_at: Int
-      update_at: Int
+      created_at: String
     ): Task
   }
 `;
@@ -36,19 +34,15 @@ exports.resolvers = {
   },
 
   Mutation: {
-    newTask: async (
-      obj,
-      { title, description, finished, created_at, finished_at, update_at }
-    ) => {
+    newTask: async (obj, { title, description, finished, created_at }) => {
       const task = await Task.create({
         title,
         description,
         finished,
         created_at,
-        finished_at,
-        update_at,
       });
       return task.dataValues;
+     
     },
   },
 };

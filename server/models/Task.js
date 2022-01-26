@@ -19,13 +19,13 @@ const Task = sequelize.define(
       type: DataTypes.BOOLEAN,
     },
     created_at: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     finished_at: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     update_at: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
   },
   {
