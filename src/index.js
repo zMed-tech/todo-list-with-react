@@ -3,11 +3,19 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Home from "./Home";
 import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:5000/graphql",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <Home />
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
