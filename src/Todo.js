@@ -80,7 +80,11 @@ const Todo = () => {
         Add
       </button>
       <div>
-        <ul></ul>
+        <ul>
+          {dataTasks?.tasks.map((task) => {
+            return <Task key={task.id} task={task} />;
+          })}
+        </ul>
       </div>
     </div>
   );
