@@ -25,23 +25,13 @@ const Task = (props) => {
       </div>
       <div>
         <button
-          className="bg-indigo-400 
-        text-white 
-        font-bold 
-        px-1
-        mx-2
-        "
-        >
-          Edit
-        </button>
-        <button
           onClick={deleteTask}
           className="bg-orange-500 
         text-white 
         font-bold 
         px-1"
         >
-          Del
+          Delete
         </button>
       </div>
     </div>
