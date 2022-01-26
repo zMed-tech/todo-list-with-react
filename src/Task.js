@@ -5,6 +5,10 @@ const Task = (props) => {
   const handleInputChange = () => {
     setFinished(!finished);
   };
+
+  const deleteTask = () => {
+    props.deleteTask(props.task.id);
+  };
   return (
     <div className="flex justify-between border-y py-3">
       <div>
@@ -31,6 +35,7 @@ const Task = (props) => {
           Edit
         </button>
         <button
+          onClick={deleteTask}
           className="bg-orange-500 
         text-white 
         font-bold 
