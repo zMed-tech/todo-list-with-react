@@ -1,9 +1,26 @@
 import { useState } from "react";
 import Task from "./Task";
+import { useQuery, gql } from "@apollo/client";
+
+const getTasks = gql`
+  query getTasks {
+    tasks {
+      id
+      title
+      description
+      finished
+      created_at
+      finished_at
+      update_at
+    }
+  }
+`;
 
 const Todo = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { loading: loadGetTasks, data: dataTasks } = useQuery(getTasks);
+  console.log(dataTasks);
 
   const handleInput = (e) => {
     if (e.target.localName === "input") {
@@ -22,6 +39,11 @@ const Todo = () => {
 
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
+      {loadGetTasks && (
+        <div>
+          <span>Loading ...</span>{" "}
+        </div>
+      )}
       <div className="my-4 mx-auto">
         <span className="text-xl font-bold text-indigo-900">My Todo</span>
       </div>
