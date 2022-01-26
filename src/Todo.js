@@ -14,6 +14,10 @@ const Todo = () => {
     }
   };
 
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((task, id) => id !== index));
+  };
+
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
       <div className="my-4 mx-auto">
@@ -43,7 +47,13 @@ const Todo = () => {
       <div>
         <ul>
           {tasks.map((task, index) => {
-            return <Task key={index} task={{ id: index, ...task }} />;
+            return (
+              <Task
+                key={index}
+                task={{ id: index, ...task }}
+                deleteTask={deleteTask}
+              />
+            );
           })}
         </ul>
       </div>
