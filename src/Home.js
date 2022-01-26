@@ -2,7 +2,7 @@ import Todo from "./Todo";
 
 const Home = () => {
   return (
-    <div>
+    <div className="min-h-screen flex justify-center ">
       <Todo />
     </div>
   );
