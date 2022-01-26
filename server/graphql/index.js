@@ -23,6 +23,8 @@ exports.typeDefs = gql`
       finished: Boolean
       created_at: String
     ): Task
+
+    deleteTask(id: ID): Task
   }
 `;
 
@@ -42,7 +44,10 @@ exports.resolvers = {
         created_at,
       });
       return task.dataValues;
-     
+    },
+    deleteTask: async (obj, { id }) => {
+      await Task.destroy({ where: { id } });
+      return { id };
     },
   },
 };
