@@ -7,9 +7,9 @@ exports.typeDefs = gql`
     title: String
     description: String
     finished: Boolean
-    created_at: Number
-    finished_at: Number
-    update_at: Number
+    created_at: Int
+    finished_at: Int
+    update_at: Int
   }
 
   type Query {
@@ -21,9 +21,9 @@ exports.typeDefs = gql`
       title: String
       description: String
       finished: Boolean
-      created_at: Number
-      finished_at: Number
-      update_at: Number
+      created_at: Int
+      finished_at: Int
+      update_at: Int
     ): Task
   }
 `;
