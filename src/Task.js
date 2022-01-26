@@ -2,31 +2,48 @@ import { useState } from "react";
 
 const Task = (props) => {
   const [finished, setFinished] = useState(false);
-  const handleInputChange = () => {
-    setFinished(!finished);
+  const handleChange = (e) => {
+    if (e.target.id === "finished") {
+      setFinished(!finished);
+    }
   };
 
-  const deleteTask = () => {
-    props.deleteTask(props.task.id);
-  };
   return (
-    <div className="flex justify-between border-y py-3">
-      <div>
-        <input
-          type="checkbox"
-          checked={finished}
-          onChange={handleInputChange}
-        />
+    <div className="flex flex-col border-y py-3">
+      <div className="mx-auto">
         <span
-          className={`mx-2 ${finished ? "line-through text-gray-500" : ""}`}
+          className={`text-2xl text-indigo-600 font-bold 
+          ${finished ? "line-through" : "underline"}`}
         >
-          {props.task.name}
+          {props.task.title}
         </span>
       </div>
-      <div>
+      <div className="mb-5">
+        <span className={`${finished ? "line-through" : ""}`}>
+          {props.task.description}
+        </span>
+      </div>
+      <div className="flex justify-end">
         <button
-          onClick={deleteTask}
-          className="bg-orange-500 
+          id="finished"
+          onClick={handleChange}
+          className={`mx-2 ${finished ? "bg-red-500" : "bg-green-500"}
+          text-white 
+          font-bold 
+          px-1`}
+        >
+          {finished ? "Unfinished" : "Finished"}
+        </button>
+        <button
+          className="mx-2 bg-indigo-500 
+        text-white 
+        font-bold 
+        px-1"
+        >
+          Edit
+        </button>
+        <button
+          className="mx-2 bg-orange-500 
         text-white 
         font-bold 
         px-1"
