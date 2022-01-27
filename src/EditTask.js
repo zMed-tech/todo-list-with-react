@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setOpenEdit, setMakeRefetch } from "./store/reducers/task";
+import { setLoading } from "./store/reducers/loading";
 import { useMutation, gql } from "@apollo/client";
 
 const updateTask = gql`
@@ -33,7 +34,7 @@ const EditTask = () => {
   const [setMaxChar, setsetMaxChar] = useState(300);
   const { openEdit, id, makeRefetch } = useSelector((state) => state.task);
   const dispatch = useDispatch();
-  const [mutateUpdateTask, { loading }] = useMutation(updateTask);
+  const [mutateUpdateTask] = useMutation(updateTask);
 
   useEffect(() => {
     setsetMaxChar(300 - description.length);
@@ -46,6 +47,7 @@ const EditTask = () => {
       setDescription(e.target.value);
     } else if (e.target.id === "edit") {
       if (title !== "" && description !== "") {
+        dispatch(setLoading(true));
         await mutateUpdateTask({
           variables: {
             updateTaskId: id,
@@ -54,6 +56,7 @@ const EditTask = () => {
             updateAt: Date.now() + "",
           },
         });
+        dispatch(setLoading(false));
         setTitle("");
         setDescription("");
         dispatch(setOpenEdit(false));
@@ -67,19 +70,11 @@ const EditTask = () => {
       <div
         className="h-screen w-screen fixed flex
          justify-center items-center z-10
-        
+          bg-blackTransparent
          "
-        style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
       >
         <div className="bg-white p-3 rounded-lg">
           <div className="flex justify-end mb-2">
-            {loading ? (
-              <div>
-                <span>Loading...</span>
-              </div>
-            ) : (
-              ""
-            )}
             <button
               className="bg-red-600 text-white font-bold rounded-xl px-2"
               onClick={() => dispatch(setOpenEdit(false))}

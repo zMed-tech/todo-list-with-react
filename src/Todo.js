@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import Task from "./Task";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading } from "./store/reducers/loading";
 
 const getTasks = gql`
   query getTasks {
@@ -39,13 +40,14 @@ const Todo = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [maxChar, setMaxChar] = useState(300);
-  const {
-    loading: loadGetTasks,
-    data: dataTasks,
-    refetch,
-  } = useQuery(getTasks);
-  const [mutateAddTask, { loading }] = useMutation(addTask);
+  const { data: dataTasks, loading, refetch } = useQuery(getTasks);
+  const [mutateAddTask] = useMutation(addTask);
   const { makeRefetch } = useSelector((state) => state.task);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setLoading(loading));
+  }, [loading, dispatch]);
 
   useEffect(() => {
     setMaxChar(300 - description.length);
@@ -53,7 +55,7 @@ const Todo = () => {
 
   useEffect(() => {
     refetch();
-  }, [makeRefetch]);
+  }, [makeRefetch, refetch]);
 
   const handleChange = async (e) => {
     if (e.target.localName === "input") {
@@ -62,6 +64,7 @@ const Todo = () => {
       setDescription(e.target.value);
     } else {
       if (title !== "" && description !== "") {
+        dispatch(setLoading(true));
         const now = Date.now();
         await mutateAddTask({
           variables: {
@@ -74,26 +77,13 @@ const Todo = () => {
         setTitle("");
         setDescription("");
         refetch();
+        dispatch(setLoading(false));
       }
     }
   };
 
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
-      {loadGetTasks ? (
-        <div>
-          <span>Loading ...</span>
-        </div>
-      ) : (
-        ""
-      )}
-      {loading ? (
-        <div>
-          <span>Loading ...</span>
-        </div>
-      ) : (
-        ""
-      )}
       <div className="my-4 mx-auto">
         <span className="text-xl font-bold text-indigo-900">My Todo</span>
       </div>
