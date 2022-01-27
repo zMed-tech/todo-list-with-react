@@ -107,7 +107,7 @@ const Task = (props) => {
           {props.task.title}
         </span>
       </div>
-      <div className="mb-5">
+      <div className="mb-5 max-w-md break-words">
         <span className={`${props.task.finished ? "line-through" : ""}`}>
           {props.task.description}
         </span>
