@@ -83,7 +83,7 @@ const EditTask = () => {
         </div>
         <div className="border p-1">
           <input
-            className="outline-0"
+            className="outline-0 w-full"
             placeholder="Title"
             value={title}
             onChange={handleChange}
