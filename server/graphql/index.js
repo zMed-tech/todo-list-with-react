@@ -25,6 +25,16 @@ exports.typeDefs = gql`
     ): Task
 
     deleteTask(id: ID): Task
+
+    updateTask(
+      id: ID
+      title: String
+      description: String
+      finished: Boolean
+      created_at: String
+      finished_at: String
+      update_at: String
+    ): Task
   }
 `;
 
@@ -48,6 +58,10 @@ exports.resolvers = {
     deleteTask: async (obj, { id }) => {
       await Task.destroy({ where: { id } });
       return { id };
+    },
+
+    updateTask: async (obj, arg) => {
+      await Task.update(arg, { where: { id: arg.id } });
     },
   },
 };
