@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Task from "./Task";
 import { useQuery, gql, useMutation } from "@apollo/client";
+import { useSelector } from "react-redux";
 
 const getTasks = gql`
   query getTasks {
@@ -44,10 +45,15 @@ const Todo = () => {
     refetch,
   } = useQuery(getTasks);
   const [mutateAddTask, { loading }] = useMutation(addTask);
+  const { makeRefetch } = useSelector((state) => state.task);
 
   useEffect(() => {
-   setMaxChar(300 - description.length)
+    setMaxChar(300 - description.length);
   }, [description]);
+
+  useEffect(() => {
+    refetch();
+  }, [makeRefetch]);
 
   const handleChange = async (e) => {
     if (e.target.localName === "input") {
