@@ -69,7 +69,7 @@ const Todo = () => {
     } else if (e.target.localName === "textarea") {
       setDescription(e.target.value);
     } else {
-      if (title !== "" && description !== "") {
+      if (title.trim() !== "" && description.trim() !== "") {
         dispatch(setLoading(true));
         const now = Date.now();
         await mutateAddTask({

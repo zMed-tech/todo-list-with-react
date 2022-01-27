@@ -46,7 +46,7 @@ const EditTask = () => {
     } else if (e.target.localName === "textarea") {
       setDescription(e.target.value);
     } else if (e.target.id === "edit") {
-      if (title !== "" && description !== "") {
+      if (title.trim() !== "" && description.trim() !== "") {
         dispatch(setLoading(true));
         await mutateUpdateTask({
           variables: {
