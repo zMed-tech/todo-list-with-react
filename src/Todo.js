@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Task from "./Task";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +46,8 @@ const Todo = () => {
   const [mutateAddTask] = useMutation(addTask);
   const { makeRefetch } = useSelector((state) => state.task);
   const dispatch = useDispatch();
+  const myDescriptionInput = useRef(null);
+  const myButtonAdd = useRef(null);
 
   useEffect(() => {
     if (!loading) {
@@ -130,6 +132,14 @@ const Todo = () => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && e.target.localName === "input") {
+      myDescriptionInput.current.focus();
+    } else if (e.key === "Enter" && e.target.localName === "textarea") {
+      myButtonAdd.current.click();
+    }
+  };
+
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
       <div className="my-4 mx-auto">
@@ -142,6 +152,7 @@ const Todo = () => {
           placeholder="Title"
           value={title}
           onChange={handleChange}
+          onKeyPress={handleKeyPress}
         />
         {myTasks.length > 0 ? (
           <select
@@ -160,6 +171,7 @@ const Todo = () => {
       </div>
       <div className="relative">
         <textarea
+          ref={myDescriptionInput}
           className="border w-full outline-0 px-2"
           placeholder="description"
           cols={45}
@@ -167,6 +179,7 @@ const Todo = () => {
           maxLength={300}
           value={description}
           onChange={handleChange}
+          onKeyPress={handleKeyPress}
         ></textarea>
         <span className="absolute right-2 bottom-2 text-indigo-400">
           {" "}
@@ -174,6 +187,7 @@ const Todo = () => {
         </span>
       </div>
       <button
+        ref={myButtonAdd}
         className="bg-indigo-500 
                             py-1 px-2 
                             text-white 
