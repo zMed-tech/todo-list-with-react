@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Task from "./Task";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
@@ -37,12 +37,17 @@ const addTask = gql`
 const Todo = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [maxChar, setMaxChar] = useState(300);
   const {
     loading: loadGetTasks,
     data: dataTasks,
     refetch,
   } = useQuery(getTasks);
   const [mutateAddTask, { loading }] = useMutation(addTask);
+
+  useEffect(() => {
+   setMaxChar(300 - description.length)
+  }, [description]);
 
   const handleChange = async (e) => {
     if (e.target.localName === "input") {
@@ -101,9 +106,14 @@ const Todo = () => {
           placeholder="description"
           cols={45}
           rows={7}
+          maxLength={300}
           value={description}
           onChange={handleChange}
         ></textarea>
+        <span className="absolute right-2 bottom-2 text-indigo-400">
+          {" "}
+          {maxChar}{" "}
+        </span>
       </div>
       <button
         className="bg-indigo-500 
