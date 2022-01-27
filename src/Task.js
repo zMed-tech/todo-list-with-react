@@ -1,4 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { setOpenEdit, setId } from "./store/reducers/task";
 
 const deleteTask = gql`
   mutation deleteTask($deleteTaskId: ID) {
@@ -35,6 +37,7 @@ const updateTask = gql`
 const Task = (props) => {
   const [mutateDeleteTask, { loading }] = useMutation(deleteTask);
   const [mutateUpdateTask, { loading: loadUpdate }] = useMutation(updateTask);
+  const dispatch = useDispatch();
 
   const handleChange = async (e) => {
     if (e.target.id === "finished") {
@@ -61,6 +64,9 @@ const Task = (props) => {
     } else if (e.target.id === "delete") {
       await mutateDeleteTask({ variables: { deleteTaskId: props.task.id } });
       props.refetch();
+    } else {
+      dispatch(setOpenEdit(true));
+      dispatch(setId(props.task.id))
     }
   };
 
@@ -100,6 +106,7 @@ const Task = (props) => {
           {props.task.finished ? "Unfinished" : "Finished"}
         </button>
         <button
+          onClick={handleChange}
           className="mx-2 bg-indigo-500 
         text-white 
         font-bold 
