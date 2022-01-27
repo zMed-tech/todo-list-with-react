@@ -65,61 +65,59 @@ const EditTask = () => {
     }
   };
 
-  if (openEdit) {
-    return (
-      <div
-        className="h-screen w-screen fixed flex
-         justify-center items-center z-10
-          bg-blackTransparent
-         "
-      >
-        <div className="bg-white p-3 rounded-lg">
-          <div className="flex justify-end mb-2">
-            <button
-              className="bg-red-600 text-white font-bold rounded-xl px-2"
-              onClick={() => dispatch(setOpenEdit(false))}
-            >
-              Close
-            </button>
-          </div>
-          <div className="border p-1">
-            <input
-              className="outline-0"
-              placeholder="Title"
-              value={title}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="border p-1 my-2 relative">
-            <textarea
-              className="outline-0"
-              rows={7}
-              cols={45}
-              maxLength={300}
-              placeholder="Description"
-              value={description}
-              onChange={handleChange}
-            ></textarea>
-            <span className="absolute bottom-1 right-1 text-indigo-400">
-              {" "}
-              {setMaxChar}{" "}
-            </span>
-          </div>
-          <div className="">
-            <button
-              id="edit"
-              className="w-full bg-indigo-700 text-white font-bold"
-              onClick={handleChange}
-            >
-              Edit
-            </button>
-          </div>
+  return openEdit ? (
+    <div
+      className="h-screen w-screen fixed flex
+ justify-center items-center z-10
+  bg-blackTransparent
+ "
+    >
+      <div className="bg-white p-3 rounded-lg">
+        <div className="flex justify-end mb-2">
+          <button
+            className="bg-red-600 text-white font-bold rounded-xl px-2"
+            onClick={() => dispatch(setOpenEdit(false))}
+          >
+            Close
+          </button>
+        </div>
+        <div className="border p-1">
+          <input
+            className="outline-0"
+            placeholder="Title"
+            value={title}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="border p-1 my-2 relative">
+          <textarea
+            className="outline-0"
+            rows={7}
+            cols={45}
+            maxLength={300}
+            placeholder="Description"
+            value={description}
+            onChange={handleChange}
+          ></textarea>
+          <span className="absolute bottom-1 right-1 text-indigo-400">
+            {" "}
+            {setMaxChar}{" "}
+          </span>
+        </div>
+        <div className="">
+          <button
+            id="edit"
+            className="w-full bg-indigo-700 text-white font-bold"
+            onClick={handleChange}
+          >
+            Edit
+          </button>
         </div>
       </div>
-    );
-  } else {
-    return "";
-  }
+    </div>
+  ) : (
+    ""
+  );
 };
 
 export default EditTask;
