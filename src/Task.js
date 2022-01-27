@@ -2,6 +2,9 @@ import { useMutation, gql } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { setOpenEdit, setId } from "./store/reducers/task";
 import { setLoading } from "./store/reducers/loading";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const deleteTask = gql`
   mutation deleteTask($deleteTaskId: ID) {
@@ -77,8 +80,16 @@ const Task = (props) => {
     }
   };
 
+  const formatDate = (timestamp) => {
+    return dayjs(Number(timestamp)).fromNow();
+  };
+
   return (
-    <div className="flex flex-col border-y py-3">
+    <div className="flex flex-col border-y py-3 relative">
+      <span className="absolute right-0">
+        {formatDate(props.task.created_at)}{" "}
+      </span>
+
       <div className="mx-auto">
         <span
           className={`text-2xl text-indigo-600 font-bold 
@@ -125,6 +136,17 @@ const Task = (props) => {
           Delete
         </button>
       </div>
+      <span className="text-green-500">
+        {" "}
+        {props.task.finished_at
+          ? " finished : " + formatDate(props.task.finished_at)
+          : ""}{" "}
+      </span>
+      <span className="text-indigo-600">
+        {props.task.update_at
+          ? " updated : " + formatDate(props.task.update_at)
+          : ""}{" "}
+      </span>
     </div>
   );
 };
