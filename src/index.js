@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import store from "./store";
 import { Provider } from "react-redux";
+import EditTask from "./EditTask";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -16,6 +17,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <React.StrictMode>
+        <EditTask />
         <Home />
       </React.StrictMode>
     </Provider>
