@@ -2,7 +2,23 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Start the server (backend)
+
+go to the server folder and run :
+
+### `npm install`
+
+for installing dependencies
+
+### Set the database
+
+on database file change the database name, username, password and host depending on your database configuration the run :
+
+### `npm start`
+
+to start the server
+
+## Available Scripts (front)
 
 In the project directory, you can run:
 
