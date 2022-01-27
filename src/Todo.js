@@ -143,16 +143,20 @@ const Todo = () => {
           value={title}
           onChange={handleChange}
         />
-        <select
-          className="outline-0 
+        {myTasks.length > 0 ? (
+          <select
+            className="outline-0 
         bg-indigo-400
          text-white font-bold"
-          onClick={handleSelect}
-        >
-          <option value={"all"}>All</option>
-          <option value={"finished"}>Finished</option>
-          <option value={"unfinished"}>Unfinished</option>
-        </select>
+            onClick={handleSelect}
+          >
+            <option value={"all"}>All</option>
+            <option value={"finished"}>Finished</option>
+            <option value={"unfinished"}>Unfinished</option>
+          </select>
+        ) : (
+          ""
+        )}
       </div>
       <div className="relative">
         <textarea
