@@ -4,7 +4,9 @@ import { setOpenEdit, setId } from "./store/reducers/task";
 import { setLoading } from "./store/reducers/loading";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import localized from "dayjs/plugin/localizedFormat";
 dayjs.extend(relativeTime);
+dayjs.extend(localized);
 
 const deleteTask = gql`
   mutation deleteTask($deleteTaskId: ID) {
@@ -84,9 +86,16 @@ const Task = (props) => {
     return dayjs(Number(timestamp)).fromNow();
   };
 
+  const formatDateFriendly = (timestamp) => {
+    return dayjs(Number(timestamp)).format("llll");
+  };
+
   return (
     <div className="flex flex-col border-y py-3 relative">
-      <span className="absolute right-0">
+      <span
+        className="absolute right-0"
+        title={formatDateFriendly(props.task.created_at)}
+      >
         {formatDate(props.task.created_at)}{" "}
       </span>
 
@@ -136,13 +145,19 @@ const Task = (props) => {
           Delete
         </button>
       </div>
-      <span className="text-green-500">
+      <span
+        className="text-green-500"
+        title={formatDateFriendly(props.task.finished_at)}
+      >
         {" "}
         {props.task.finished_at
           ? " finished : " + formatDate(props.task.finished_at)
           : ""}{" "}
       </span>
-      <span className="text-indigo-600">
+      <span
+        className="text-indigo-600"
+        title={formatDateFriendly(props.task.update_at)}
+      >
         {props.task.update_at
           ? " updated : " + formatDate(props.task.update_at)
           : ""}{" "}
