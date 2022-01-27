@@ -41,13 +41,17 @@ const Todo = () => {
   const [description, setDescription] = useState("");
   const [maxChar, setMaxChar] = useState(300);
   const { data: dataTasks, loading, refetch } = useQuery(getTasks);
+  const [myTasks, setMyTasks] = useState([]);
+  const [option, setOption] = useState("all");
   const [mutateAddTask] = useMutation(addTask);
   const { makeRefetch } = useSelector((state) => state.task);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setLoading(loading));
-  }, [loading, dispatch]);
+    if (!loading) {
+      setMyTasks(dataTasks?.tasks);
+    }
+  }, [dataTasks, loading]);
 
   useEffect(() => {
     setMaxChar(300 - description.length);
@@ -82,19 +86,73 @@ const Todo = () => {
     }
   };
 
+  const handleSelect = (e) => {
+    switch (e.target.value) {
+      case "all":
+        setOption(e.target.value);
+        break;
+      case "finished":
+        setOption(e.target.value);
+        break;
+
+      case "unfinished":
+        setOption(e.target.value);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const taskOption = (tasks) => {
+    switch (option) {
+      case "all":
+        return tasks.map((task) => {
+          return <Task key={task.id} task={task} refetch={refetch} />;
+        });
+
+      case "finished":
+        return tasks
+          .filter((task) => task.finished === true)
+          .map((task) => {
+            return <Task key={task.id} task={task} refetch={refetch} />;
+          });
+
+      case "unfinished":
+        return tasks
+          .filter((task) => task.finished === false)
+          .map((task) => {
+            return <Task key={task.id} task={task} refetch={refetch} />;
+          });
+
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="my-4 flex flex-col bg-white h-full p-5 shadow shadow-gray">
       <div className="my-4 mx-auto">
         <span className="text-xl font-bold text-indigo-900">My Todo</span>
       </div>
 
-      <div className="my-4  border py-1 px-2">
+      <div className="my-4 border py-1 px-2 flex">
         <input
           className="outline-0 w-full"
           placeholder="Title"
           value={title}
           onChange={handleChange}
         />
+        <select
+          className="outline-0 
+        bg-indigo-400
+         text-white font-bold"
+          onClick={handleSelect}
+        >
+          <option value={"all"}>All</option>
+          <option value={"finished"}>Finished</option>
+          <option value={"unfinished"}>Unfinished</option>
+        </select>
       </div>
       <div className="relative">
         <textarea
@@ -125,11 +183,7 @@ const Todo = () => {
         Add
       </button>
       <div>
-        <ul>
-          {dataTasks?.tasks.map((task) => {
-            return <Task key={task.id} task={task} refetch={refetch} />;
-          })}
-        </ul>
+        <ul>{taskOption(myTasks)}</ul>
       </div>
     </div>
   );
