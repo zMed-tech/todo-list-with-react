@@ -7,6 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import store from "./store";
 import { Provider } from "react-redux";
 import EditTask from "./EditTask";
+import Loading from "./Loading";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -17,6 +18,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <React.StrictMode>
+        <Loading />
         <EditTask />
         <Home />
       </React.StrictMode>
