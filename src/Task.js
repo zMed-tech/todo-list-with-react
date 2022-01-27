@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
 
 const deleteTask = gql`
@@ -9,12 +8,43 @@ const deleteTask = gql`
   }
 `;
 
+const updateTask = gql`
+  mutation updateTask(
+    $updateTaskId: ID
+    $title: String
+    $description: String
+    $finished: Boolean
+    $createdAt: String
+    $finishedAt: String
+    $updateAt: String
+  ) {
+    updateTask(
+      id: $updateTaskId
+      title: $title
+      description: $description
+      finished: $finished
+      created_at: $createdAt
+      finished_at: $finishedAt
+      update_at: $updateAt
+    ) {
+      id
+    }
+  }
+`;
+
 const Task = (props) => {
-  const [finished, setFinished] = useState(false);
   const [mutateDeleteTask, { loading }] = useMutation(deleteTask);
+  const [mutateUpdateTask, { loading: loadUpdate }] = useMutation(updateTask);
+
   const handleChange = async (e) => {
     if (e.target.id === "finished") {
-      setFinished(!finished);
+      await mutateUpdateTask({
+        variables: {
+          updateTaskId: props.task.id,
+          finished: !props.task.finished,
+        },
+      });
+      props.refetch();
     } else if (e.target.id === "delete") {
       await mutateDeleteTask({ variables: { deleteTaskId: props.task.id } });
       props.refetch();
@@ -23,7 +53,7 @@ const Task = (props) => {
 
   return (
     <div className="flex flex-col border-y py-3">
-      {loading ? (
+      {loading || loadUpdate ? (
         <div>
           <span>Loading ...</span>
         </div>
@@ -33,13 +63,13 @@ const Task = (props) => {
       <div className="mx-auto">
         <span
           className={`text-2xl text-indigo-600 font-bold 
-          ${finished ? "line-through" : "underline"}`}
+          ${props.task.finished ? "line-through" : "underline"}`}
         >
           {props.task.title}
         </span>
       </div>
       <div className="mb-5">
-        <span className={`${finished ? "line-through" : ""}`}>
+        <span className={`${props.task.finished ? "line-through" : ""}`}>
           {props.task.description}
         </span>
       </div>
@@ -47,12 +77,14 @@ const Task = (props) => {
         <button
           id="finished"
           onClick={handleChange}
-          className={`mx-2 ${finished ? "bg-red-500" : "bg-green-500"}
+          className={`mx-2 ${
+            props.task.finished ? "bg-red-500" : "bg-green-500"
+          }
           text-white 
           font-bold 
           px-1`}
         >
-          {finished ? "Unfinished" : "Finished"}
+          {props.task.finished ? "Unfinished" : "Finished"}
         </button>
         <button
           className="mx-2 bg-indigo-500 
