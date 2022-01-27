@@ -38,12 +38,25 @@ const Task = (props) => {
 
   const handleChange = async (e) => {
     if (e.target.id === "finished") {
-      await mutateUpdateTask({
-        variables: {
-          updateTaskId: props.task.id,
-          finished: !props.task.finished,
-        },
-      });
+      if (!props.task.finished) {
+        const now = Date.now();
+        await mutateUpdateTask({
+          variables: {
+            updateTaskId: props.task.id,
+            finished: !props.task.finished,
+            finishedAt: now + "",
+          },
+        });
+      } else {
+        await mutateUpdateTask({
+          variables: {
+            updateTaskId: props.task.id,
+            finished: !props.task.finished,
+            finishedAt: null,
+          },
+        });
+      }
+
       props.refetch();
     } else if (e.target.id === "delete") {
       await mutateDeleteTask({ variables: { deleteTaskId: props.task.id } });
