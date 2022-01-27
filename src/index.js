@@ -4,6 +4,8 @@ import "./index.css";
 import Home from "./Home";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import store from "./store";
+import { Provider } from "react-redux";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -12,10 +14,13 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <React.StrictMode>
-      <Home />
-    </React.StrictMode>
+    <Provider store={store}>
+      <React.StrictMode>
+        <Home />
+      </React.StrictMode>
+    </Provider>
   </ApolloProvider>,
+
   document.getElementById("root")
 );
 
