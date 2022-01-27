@@ -9,7 +9,12 @@ const app = express();
 const server = new ApolloServer({ typeDefs, resolvers });
 
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 server.start().then(() => {
   server.applyMiddleware({ app });
