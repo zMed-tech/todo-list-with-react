@@ -3,11 +3,28 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Home from "./Home";
 import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import store from "./store";
+import { Provider } from "react-redux";
+import EditTask from "./EditTask";
+import Loading from "./Loading";
+
+const client = new ApolloClient({
+  uri: "http://localhost:5000/graphql",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <React.StrictMode>
+        <Loading />
+        <EditTask />
+        <Home />
+      </React.StrictMode>
+    </Provider>
+  </ApolloProvider>,
+
   document.getElementById("root")
 );
 
